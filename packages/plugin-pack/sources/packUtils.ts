@@ -232,7 +232,11 @@ export async function genPackList(workspace: Workspace) {
     ignoreList.reject.push(`/*`);
 
     for (const pattern of workspace.manifest.files!) {
-      addIgnorePattern(ignoreList.accept, pattern, {cwd: PortablePath.root});
+      if (pattern[0] === `!`) {
+        addIgnorePattern(ignoreList.reject, pattern, {cwd: PortablePath.root});
+      } else {
+        addIgnorePattern(ignoreList.accept, pattern, {cwd: PortablePath.root});
+      }
     }
   }
 
